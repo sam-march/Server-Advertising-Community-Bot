@@ -9,31 +9,14 @@ import time
 from random import choice
 from discord.ext import commands, tasks
 
-from discord.ext import commands
-
 token = os.environ['token']
 client = commands.Bot(command_prefix="-", intents=discord.Intents.all())
 client.remove_command("help")
-
-
-aclient = client()
-tree = app_commands.CommandTree(aclient)
-
-
 @client.event
 async def on_ready():
-	await self.wait_until_ready()
-	if not self.synced: 
-		await tree.sync(guild = discord.Object(id=guild_id))
-		self.synced = True
 	print("Bot is online and ready to serve!")
-	await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching,name=f" -help"))
-
-@client.command()
-async def status(ctx):
-    em = discord.Embed(title="Advertising & Community Bot is online!", colour=discord.Colour.from_rgb(255,255,51))
-    #em.set_footer(text=f"Time Occured: {curr_time}")
-    await ctx.reply(embed=em, mention_author=False)
+	await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching,name=f" $help"))
+	await client.add_cog(Player(client))
 
 @client.command()
 async def hello(ctx):
@@ -45,7 +28,7 @@ async def hello(ctx):
 	em = discord.Embed(title="👋",description=f"Hello there {member.mention}, I'm {bot.mention}, here to keep you safe in 📈Server Advertising And Community Server💛\nI was programmed by {dev.mention}", colour=discord.Colour.from_rgb(255,255,51))
     #em.set_footer(text=f"Time Occured: {curr_time}")
 	em.set_image(url="attachment://Photo_1646324274679.jpg")
-	await ctx.reply(embed=em, mention_author=False, file=file)
+	await ctx.reply(embed=em, file=file,mention_author=False)
 
 
 
@@ -55,5 +38,6 @@ async def hello(ctx):
 
 
 
-keep_alive()
+
+#keep_alive()
 client.run(token)

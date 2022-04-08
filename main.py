@@ -2,11 +2,12 @@ import os
 import discord
 from discord import Member
 from discord.utils import get
-from discord import app_commands
 from webserver import keep_alive
 import random
 import asyncio
 import time
+from random import choice
+from discord.ext import commands, tasks
 
 from discord.ext import commands
 
@@ -21,12 +22,13 @@ tree = app_commands.CommandTree(aclient)
 
 @client.event
 async def on_ready():
-await self.wait_until_ready()
-    if not self.synced: #check if slash commands have been synced 
-        await tree.sync(guild = discord.Object(id=guild_id)) #guild specific: leave blank if global (global registration can take 1-24 hours)
-        self.synced = True
+	await self.wait_until_ready()
+	if not self.synced: 
+		await tree.sync(guild = discord.Object(id=guild_id))
+		self.synced = True
 	print("Bot is online and ready to serve!")
 	await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching,name=f" -help"))
+
 @client.command()
 async def status(ctx):
     em = discord.Embed(title="Advertising & Community Bot is online!", colour=discord.Colour.from_rgb(255,255,51))

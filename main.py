@@ -8,10 +8,14 @@ import asyncio
 import time
 from random import choice
 from discord.ext import commands, tasks
+from music_cog import music_cog
 
 token = os.environ['token']
 client = commands.Bot(command_prefix="%", intents=discord.Intents.all())
 client.remove_command("help")
+client.add_cog(music_cog(client))
+
+
 @client.event
 async def on_ready():
 	print("Bot is online and ready to serve!")

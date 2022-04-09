@@ -8,12 +8,12 @@ import asyncio
 import time
 from random import choice
 from discord.ext import commands, tasks
-from music_cog import music_cog
+from player import Player
 
 token = os.environ['token']
 client = commands.Bot(command_prefix="%", intents=discord.Intents.all())
 client.remove_command("help")
-client.add_cog(music_cog(client))
+client.add_cog(Player(client))
 
 
 @client.event

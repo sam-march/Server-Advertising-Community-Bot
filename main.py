@@ -2,7 +2,6 @@ import os
 import discord
 from discord import Member
 from discord.utils import get
-from webserver import keep_alive
 import random
 import asyncio
 import time
@@ -102,5 +101,4 @@ async def rules(ctx):
 
 
 
-keep_alive()
 client.run(token)

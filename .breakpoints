@@ -1,5 +1,13 @@
 {
   "files": {
+    "main.py": [
+      {
+        "id": "80c4c1c6-77b7-45ac-920a-aa76f54fd763",
+        "line": 15,
+        "version": 900,
+        "index": 325
+      }
+    ],
     "music.py": [
       {
         "id": "77af3691-8b1e-4ddd-949b-17d25a73bd70",

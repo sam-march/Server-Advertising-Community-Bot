@@ -1,5 +1,6 @@
 # Requirements
 ## To run this bot, you will need the following installed:
-discord.py
+discord.py (`pip install discord`)
 
-asyncio
+asyncio (`pip install asyncio`)
+

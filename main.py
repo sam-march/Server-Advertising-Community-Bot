@@ -8,6 +8,8 @@ import time
 from discord.ext import commands, tasks
 from random import choice
 from webserver import keep_alive
+import random
+from random import randint
 
 
 token = os.environ['token']
@@ -100,6 +102,97 @@ async def rules(ctx):
 	em = discord.Embed(title="Server Rules", description=f"**discord TOS & Community Guidelines:**\nhttps://discordapp.com/terms\nhttps://discordapp.com/guidelines\n\n**Server Rules:**\n\nNo spamming, that is strictly forbidden\nPlease be kind and welcome new members\nDon't swear, be nice\nDont beg for Moderator/Admin permissions\nEnjoy your stay, advertise whatever type of server you have!\nInvite your friend for a hug", colour=discord.Colour.from_rgb(255,255,51))
 	await ctx.reply(embed=em, mention_author=False)
 
+@client.command()
+async def rps(ctx, choice=None):
+	if choice==None:
+		await ctx.reply("> You need to enter either `rock`, `paper` or `scissors` to play! Try again.", mention_author=False)
+	else:
+		bot_choice = random.randint(1,3)
+		if bot_choice == 1:
+			bot_choice = "rock"
+		elif bot_choice == 2:
+			bot_choice = "paper"
+		elif bot_choice == 3:
+			bot_choice = "scissors"
+		else:
+			await ctx.reply("> Oops, I messed up. Please try again", mention_author=False)
+		choice = choice.lower()
+		if choice == "rock":
+			if bot_choice == "scissors":
+				await ctx.reply("> You win, I chose scissors (✂️)", mention_author=False)
+			elif bot_choice == "paper":
+				await ctx.reply("> I win, I chose paper (📄)", mention_author=False)
+			elif bot_choice == "rock":
+				await ctx.reply("> Nobody won, we both chose rock (🪨)", mention_author=False)
+		elif choice == "paper":
+			if bot_choice == "scissors":
+				await ctx.reply("> I win, I chose scissors (✂️)", mention_author=False)
+			elif bot_choice == "paper":
+				await ctx.reply("> Nobody won, we both chose paper (📄)", mention_author=False)
+			elif bot_choice == "rock":
+				await ctx.reply("> You win, I chose rock (🪨)", mention_author=False)
+		elif choice == "scissors":
+			if bot_choice == "scissors":
+				await ctx.reply("> Nobody won, we both chose scissors (✂️)", mention_author=False)
+			elif bot_choice == "paper":
+				await ctx.reply("> You win, I chose paper (📄)", mention_author=False)
+			elif bot_choice == "rock":
+				await ctx.reply("> I win, I chose rock (🪨)", mention_author=False)
+		else:
+			await ctx.reply(f"> {choice}, really? You didn't enter `rock`, `paper` or `scissors`. Do you know how to play?", mention_author=False)
 
 
+@client.command(aliases = ['gg'])
+async def guessing_game(ctx):
+	bot_number= random.randint(1,100)
+	bot_number2 = bot_number= random.randint(1,100)
+	if bot_number2 > bot_number:
+		answer = "⬇️"
+	elif bot_number2 < bot_number:
+		answer = "⬆️"
+	elif bot_number2 == bot_number:
+		answer = "🤑"
+	else:
+		await ctx.reply(f">>> Oops, I messed up, please try again", mention_author=False)
+	msg = await ctx.reply(f">>> Your hint is `{bot_number2}`. Do you think that the number is higher (⬆️), lower (⬇️), or the same as `{bot_number2}` (🤑)?", mention_author=False)
+	await msg.add_reaction("⬆️")
+	await msg.add_reaction("⬇️")
+	await msg.add_reaction("🤑")
+	def check(reaction, user):
+		return user == ctx.message.author and str(reaction.emoji) in ['⬆️', '⬇️', '🤑']
+	try:
+		reaction, user = await client.wait_for('reaction_add', timeout=10, check=check)
+		if reaction.emoji == '⬆️':
+			if answer == '⬆️':
+				await msg.edit(content=f"> Correct, how did you get that? The number I chose was {bot_number}")
+			elif answer == '🤑':
+				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+			elif answer == '⬇️':
+				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+			else:
+				await msg.edit(content="Oops, I messed up. Please try again")
+		elif reaction.emoji == '⬇️':
+			if answer == '⬆️':
+				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+			elif answer == '🤑':
+				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+			elif answer == '⬇️':
+				await msg.edit(content=f"> Correct, how did you get that? The number I chose was {bot_number}")
+			else:
+				await msg.edit(content="Oops, I messed up. Please try again")
+		elif reaction.emoji == '🤑':
+			if answer == '⬆️':
+				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+			elif answer == '🤑':
+				await msg.edit(content=f"> Correct, how did you get that? The number I chose was {bot_number}")
+			elif answer == '⬇️':
+				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+			else:
+				await msg.edit(content="Oops, I messed up. Please try again")
+		else:
+			await msg.edit(content="Oops, I messed up. Please try again")
+	except asyncio.TimeoutError:
+		await msg.edit(content="Timed out")
+
+keep_alive()
 client.run(token)

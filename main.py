@@ -165,34 +165,55 @@ async def guessing_game(ctx):
 		if reaction.emoji == '⬆️':
 			if answer == '⬆️':
 				await msg.edit(content=f"> Correct, how did you get that? The number I chose was {bot_number}")
+				await msg.clear_reactions()
 			elif answer == '🤑':
 				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
 			elif answer == '⬇️':
 				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+				await msg.clear_reactions()
 			else:
 				await msg.edit(content="Oops, I messed up. Please try again")
+				await msg.clear_reactions()
 		elif reaction.emoji == '⬇️':
 			if answer == '⬆️':
 				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+				await msg.clear_reactions()
 			elif answer == '🤑':
 				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+				await msg.clear_reactions()
 			elif answer == '⬇️':
 				await msg.edit(content=f"> Correct, how did you get that? The number I chose was {bot_number}")
+				await msg.clear_reactions()
 			else:
 				await msg.edit(content="Oops, I messed up. Please try again")
+				await msg.clear_reactions()
 		elif reaction.emoji == '🤑':
 			if answer == '⬆️':
 				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+				await msg.clear_reactions()
 			elif answer == '🤑':
 				await msg.edit(content=f"> Correct, how did you get that? The number I chose was {bot_number}")
+				await msg.clear_reactions()
 			elif answer == '⬇️':
 				await msg.edit(content=f"> Wrong, good try. The number I chose was {bot_number}")
+				await msg.clear_reactions()
 			else:
 				await msg.edit(content="Oops, I messed up. Please try again")
+				await msg.clear_reactions()
 		else:
 			await msg.edit(content="Oops, I messed up. Please try again")
+			await msg.clear_reactions()
 	except asyncio.TimeoutError:
 		await msg.edit(content="Timed out")
+		
+@client.command()
+async def kick(ctx, member: discord.Member, reason=None):
+	if reason==None:
+		em =discord.Embed(title="❌ | Kick Member", descritpion="You need to enter a reason to kick this member.")
+		await ctx.reply(embed=em, mention_author=False)
 
+		
+		
+		
 keep_alive()
 client.run(token)
